@@ -55,6 +55,7 @@ func defaultHash(data []byte) uint64 {
 }
 
 // CreateConsistentHashinger 创建一致性哈希(Consistent Hashing)算法生产器
+// 该算法是并发安全的
 func CreateConsistentHashinger(vnodenum int) ConsistentHashinger {
 
 	return &consistentHashing{
@@ -118,7 +119,7 @@ func (h *consistentHashing) Get(key string) (outkey string, value interface{}) {
 
 	i := h.search(hashKey)
 	outkey = h.vnode[i]
-	value = h.nodev[outkey]
+	value = h.node[outkey]
 	return
 }
 func (h *consistentHashing) search(key uint64) uint64 {
